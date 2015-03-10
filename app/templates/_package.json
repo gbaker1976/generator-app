@@ -1,0 +1,10 @@
+{
+  "name": "<%= _.slugify(appName) %>",
+  "version": "0.0.0",
+  "dependencies": {
+    "mustache": "~0.8.1",
+    "express": "~4.0.0"
+  },
+  "devDependencies": {
+  }
+}
