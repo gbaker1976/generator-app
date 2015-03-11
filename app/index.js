@@ -47,11 +47,15 @@ var AppGenerator = yeoman.generators.Base.extend({
     this.mkdir('src/server/lib/vendor'); // third party app libs
     this.mkdir('src/server/views'); // express views
     this.mkdir('src/server/routes'); // server-side routes
+    this.mkdir('src/server/rest'); // server-side routes
 
     // client-side
     this.mkdir('src/client');
     this.mkdir('src/client/lib');
     this.mkdir('src/client/lib/vendor');
+    this.mkdir('src/client/layouts');
+    this.mkdir('src/client/css');
+    this.mkdir('src/client/js');
 
     // tests
     this.mkdir('test');
@@ -69,6 +73,8 @@ var AppGenerator = yeoman.generators.Base.extend({
     this.template('_package.json', 'package.json');
     this.template('_bowerrc', '.bowerrc');
     this.template('_bower.json', 'bower.json');
+    this.template('_gulpfile.js', 'gulpfile.js');
+    this.template('_api.md', 'src/server/rest/_api.md');
   }
 });
 

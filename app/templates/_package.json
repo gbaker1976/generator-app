@@ -6,5 +6,14 @@
     "express": "~4.0.0"
   },
   "devDependencies": {
+      "browser-sync": "^2.2.1",
+      "gulp": "^3.8.11",
+      "gulp-cssnext": "^1.0.0",
+      "gulp-postcss": "^4.0.3",
+      "gulp-watch": "^4.1.1",
+      "mocha": "~1.19.0",
+      "gulp-aglio": "0.0.6",
+      "postcss-nested": "^0.2.2",
+      "wrench": "^1.5.8"
   }
 }
