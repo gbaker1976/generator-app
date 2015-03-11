@@ -11,7 +11,7 @@ var express = require( 'express' )
     , app = express()
     , hbs = require( 'hbs' )
     , pkg = require( './package.json' );
-   
+
 
 // use handlebars templates for views
 app.set( 'view engine', 'hbs' );
@@ -25,13 +25,20 @@ app.get( '/', function( req, res, next ){
 	res.render( 'index' );
 });
 
+<% if ( hasRest ) { %>
+var proxy = require( 'http-proxy' );
+app.all( '/api/*', function( req, res ){
+    proxy.createProxyServer().web( req, res, { target: 'http://localhost:3002' });
+});
+<% } %>
+
 /**** END STANDARD ROUTE CONFIG ****/
 try {
 	var server = http.createServer( app )
-	
-	server.listen( 
+
+	server.listen(
 			9002, 'localhost', function(){
-	    		console.log( 'Express server listening on port %d in %s mode',  9002, process.env.NODE_ENV );
+	    		console.log( '<%= appName %> server listening on port %d in %s mode',  9002, process.env.NODE_ENV );
 			}
 		);
 } catch ( ex ) {
