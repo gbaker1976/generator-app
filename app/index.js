@@ -29,10 +29,22 @@ var AppGenerator = yeoman.generators.Base.extend({
             default: path.basename( process.cwd() )
         },
         {
+            type: 'number',
+            name: 'serverPort',
+            message: 'What should the dev server port be?',
+            default: 9002
+        },
+        {
             type: 'confirm',
             name: 'hasRest',
-            message: 'Do you need a rest API mock?',
+            message: 'Do you need a rest API mock server?',
             default: true
+        },
+        {
+            type: 'number',
+            name: 'mockPort',
+            message: 'What should the mock server port be?',
+            default: 3002
         }
     ];
 
@@ -75,9 +87,11 @@ var AppGenerator = yeoman.generators.Base.extend({
 
     this.prompt(prompts, function ( answers ) {
         this.appName = answers.appName;
+        this.serverPort = answers.serverPort;
 
         if ( answers.hasRest ) {
             this.hasRest = answers.hasRest;
+            this.mockPort = answers.mockPort;
             ask( done );
         }
     }.bind(this));

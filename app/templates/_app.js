@@ -6,11 +6,12 @@
 
 'use strict';
 
-var express = require( 'express' )
-    , http = require( 'http' )
-    , app = express()
-    , hbs = require( 'hbs' )
-    , pkg = require( './package.json' );
+var express = require( 'express' );
+var http = require( 'http' );
+var app = express();
+var hbs = require( 'hbs' );
+var proxy = require( 'http-proxy' );
+var pkg = require( './package.json' );
 
 
 // use handlebars templates for views
@@ -25,20 +26,21 @@ app.get( '/', function( req, res, next ){
 	res.render( 'index' );
 });
 
-<% if ( hasRest ) { %>
-var proxy = require( 'http-proxy' );
-app.all( '/api/*', function( req, res ){
-    proxy.createProxyServer().web( req, res, { target: 'http://localhost:3002' });
-});
-<% } %>
+if ( 'development' === NODE_ENV ) {
+    <% if ( hasRest ) { %>
+    app.all( '/api/*', function( req, res ){
+        proxy.createProxyServer().web( req, res, { target: 'http://localhost:<%= mockPort %>' });
+    });
+    <% } %>
+}
 
 /**** END STANDARD ROUTE CONFIG ****/
 try {
 	var server = http.createServer( app )
 
 	server.listen(
-			9002, 'localhost', function(){
-	    		console.log( '<%= appName %> server listening on port %d in %s mode',  9002, process.env.NODE_ENV );
+			<%= serverPort %>, 'localhost', function(){
+	    		console.log( '<%= appName %> server listening on port %d in %s mode', <%= serverPort %>, process.env.NODE_ENV );
 			}
 		);
 } catch ( ex ) {
