@@ -45,6 +45,18 @@ var AppGenerator = yeoman.generators.Base.extend({
             name: 'mockPort',
             message: 'What should the mock server port be?',
             default: 3002
+        },
+        {
+            type: 'confirm',
+            name: 'hasStyleguide',
+            message: 'Do you need a local styleguide server?',
+            default: true
+        },
+        {
+            type: 'number',
+            name: 'styleguidePort',
+            message: 'What should the styleguide server port be?',
+            default: 3003
         }
     ];
 
@@ -93,6 +105,11 @@ var AppGenerator = yeoman.generators.Base.extend({
             this.hasRest = answers.hasRest;
             this.mockPort = answers.mockPort;
             ask( done );
+        }
+
+        if ( answers.hasStyleguide ) {
+            this.hasStyleguide = answers.hasStyleguide;
+            this.styleguidePort = answers.styleguidePort;
         }
     }.bind(this));
   },

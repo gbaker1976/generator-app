@@ -63,15 +63,18 @@ gulp.task( 'serve-app', function() {
 	});
 });
 
+<% if ( hasStyleguide ) { %>
 gulp.task( 'serve-styleguide', function() {
 	browserSync({
 		server: {
-			port: 3001,
+			port: <%= styleguidePort %>,
 			baseDir: 'dist/styleguide'
 		}
 	});
 });
+<% } %>
 
+<% if ( hasMock ) { %>
 gulp.task ( 'serve-api-mock', function () {
     var mockserver = new ApiMock({
       blueprintPath: 'src/server/rest/api.md',
@@ -82,6 +85,7 @@ gulp.task ( 'serve-api-mock', function () {
 
     mockServer.run();
 });
+<% } %>
 
-gulp.task( 'default', [ 'clean-dist', 'css-dev', 'app-js', 'copy-html', 'serve-api-mock', 'serve-app', 'serve-styleguide' ] );
+gulp.task( 'default', [ 'clean-dist', 'css-dev', 'app-js', 'copy-html', <% if ( hasMock ) { %>'serve-api-mock',<% } %> 'serve-app'<% if ( hasStyleguide ) { %>, 'serve-styleguide'<% } %> ] );
 //gulp.task( 'package', [ 'clean-dist', 'css-prod', 'app-js', 'serve-app' ] );
