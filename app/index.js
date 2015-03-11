@@ -19,18 +19,28 @@ var AppGenerator = yeoman.generators.Base.extend({
   askFor: function () {
     var done = this.async();
 
-    this.log(chalk.magenta('You\'re using the fantastic App generator.'));
+    this.log( chalk.magenta( 'You\'re using the fantastic App generator.' ));
 
     var prompts = [
       {
         type: 'input',
         name: 'appName',
         message: 'What is the name of your app?',
-      }
+    },
+    {
+      type: 'confirm',
+      name: 'hasRest',
+      message: 'Do you need a rest API mock?',
+    }
     ];
 
     this.prompt(prompts, function (props) {
       this.appName = props.appName;
+      this.hasRest = props.hasRest;
+      this.apiMembers = [{
+          singularName: 'dog',
+          pluralName: 'dogs'
+      }]
 
       done();
     }.bind(this));
@@ -47,7 +57,10 @@ var AppGenerator = yeoman.generators.Base.extend({
     this.mkdir('src/server/lib/vendor'); // third party app libs
     this.mkdir('src/server/views'); // express views
     this.mkdir('src/server/routes'); // server-side routes
-    this.mkdir('src/server/rest'); // server-side routes
+
+    if ( this.hasRest ) {
+        this.mkdir('src/server/rest'); // server-side routes
+    }
 
     // client-side
     this.mkdir('src/client');
@@ -74,7 +87,10 @@ var AppGenerator = yeoman.generators.Base.extend({
     this.template('_bowerrc', '.bowerrc');
     this.template('_bower.json', 'bower.json');
     this.template('_gulpfile.js', 'gulpfile.js');
-    this.template('_api.md', 'src/server/rest/_api.md');
+
+    if ( this.hasRest ) {
+        this.template('_api.md', 'src/server/rest/api.md');
+    }
   }
 });
 

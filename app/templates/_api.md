@@ -1,13 +1,15 @@
 FORMAT: 1A
 HOST: http://api.yourserver.com
 
-# Example Rest API
+# <%= appName %> API
 
-# Group Example
-Example related resources of the **Example API**
+<% _.forEach( apiMembers, function( member ) {  %>
 
-## Examples Collection [/examples]
-### List all Examples [GET]
+# <%= _.capitalize( member.pluralName ) %>
+<%= _.capitalize( member.singularName ) %> related resources of the **<%= _.capitalize( appName ) %> API**
+
+## <%= _.capitalize( member.pluralName ) %> Collection [/<%= member.pluralName %>]
+### List all <%= _.capitalize( member.pluralName ) %> [GET]
 + Response 200 (application/json)
 
         {
@@ -20,7 +22,7 @@ Example related resources of the **Example API**
             }]
         }
 
-### Create an Example [POST]
+### Create an <%= _.capitalize( member.singularName ) %> [POST]
 + Request (application/json)
 
         {
@@ -34,13 +36,13 @@ Example related resources of the **Example API**
             "name": "example"
         }
 
-## Example [/examples/{exampleId}]
-A single Example object with all its details
+## <%= _.capitalize( member.singularName ) %> [/<%= member.pluralName %>/{<%= member.singularName %>Id}]
+A single <%= _.capitalize( member.singularName ) %> object with all its details
 
 + Parameters
-    + exampleId (required, number, `1`) ... Numeric `id` of the Example to perform action with. Has example value.
+    + {<%= member.singularName %>Id} (required, number, `1`) ... Numeric `id` of the <%= _.capitalize( member.singularName ) %> to perform action with. Has example value.
 
-### Retrieve an Example [GET]
+### Retrieve an <%= _.capitalize( member.singularName ) %> [GET]
 + Response 200 (application/json)
 
     + Body
@@ -50,5 +52,7 @@ A single Example object with all its details
                 "name": "example"
             }
 
-### Remove an Example [DELETE]
+### Remove an <%= _.capitalize( member.singularName ) %> [DELETE]
 + Response 204
+
+<% }) %>
