@@ -6,6 +6,7 @@ var fs = require( 'fs' );
 var wrench = require( 'wrench' );
 var aglio = require( 'gulp-aglio' );
 var browserSync = require( 'browser-sync' );
+var ApiMock = require( 'api-mock' );
 
 gulp.task( 'css-dev', function(){
 	return gulp.src( 'src/client/css/_all.css' )
@@ -56,7 +57,7 @@ gulp.task( 'gen-api-docs', function() {
 gulp.task( 'serve-app', function() {
 	browserSync({
 		server: {
-			port: 3000,
+			port: <%= serverPort %>,
 			baseDir: 'dist'
 		}
 	});
@@ -71,5 +72,16 @@ gulp.task( 'serve-styleguide', function() {
 	});
 });
 
-gulp.task( 'dev', [ 'clean-dist', 'css-dev', 'app-js', 'copy-html', 'serve-app', 'serve-styleguide' ] );
-gulp.task( 'default', [ 'clean-dist', 'css-prod', 'app-js', 'serve-app' ] );
+gulp.task ( 'serve-api-mock', function () {
+    var mockserver = new ApiMock({
+      blueprintPath: 'src/server/rest/api.md',
+      options: {
+        port: <%= mockPort %>
+      }
+    });
+
+    mockServer.run();
+});
+
+gulp.task( 'default', [ 'clean-dist', 'css-dev', 'app-js', 'copy-html', 'serve-api-mock', 'serve-app', 'serve-styleguide' ] );
+//gulp.task( 'package', [ 'clean-dist', 'css-prod', 'app-js', 'serve-app' ] );
