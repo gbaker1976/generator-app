@@ -3,50 +3,87 @@ var util = require('util');
 var path = require('path');
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
+var path = require('path');
+var inflection = require('inflection');
 
 
 var AppGenerator = yeoman.generators.Base.extend({
-  init: function () {
-    this.pkg = require('../package.json');
 
-    this.on('end', function () {
-      if (!this.options['skip-install']) {
-        this.installDependencies();
-      }
-    });
+  initializing: function () {
+    this.pkg = require('../package.json');
   },
 
-  askFor: function () {
+  prompting: function () {
     var done = this.async();
+    var self = this;
+
+    self.apiMembers = [];
 
     this.log( chalk.magenta( 'You\'re using the fantastic App generator.' ));
 
     var prompts = [
-      {
-        type: 'input',
-        name: 'appName',
-        message: 'What is the name of your app?',
-    },
-    {
-      type: 'confirm',
-      name: 'hasRest',
-      message: 'Do you need a rest API mock?',
-    }
+        {
+            type: 'input',
+            name: 'appName',
+            message: 'What is the name of your app?',
+            default: path.basename( process.cwd() )
+        },
+        {
+            type: 'confirm',
+            name: 'hasRest',
+            message: 'Do you need a rest API mock?',
+            default: true
+        }
     ];
 
-    this.prompt(prompts, function (props) {
-      this.appName = props.appName;
-      this.hasRest = props.hasRest;
-      this.apiMembers = [{
-          singularName: 'dog',
-          pluralName: 'dogs'
-      }]
+    var apiPrompts = [
+        {
+            type: "input",
+            name: "memberPluralName",
+            message: "What is the plural form for your API member?"
+        },
+        {
+            type: "input",
+            name: "memberSingularName",
+            message: "What is the singular form for your API member?",
+            default: function( answers ) {
+                return inflection.singularize( answers.memberPluralName );
+            }
+        },
+        {
+            type: "confirm",
+            name: "askAgain",
+            message: "Want to enter another API member?",
+            default: true
+        }
+    ];
 
-      done();
+    var ask = function( done ){
+        self.prompt( apiPrompts, function ( answers ) {
+            self.apiMembers.push({
+                pluralName: answers.memberPluralName.toLowerCase(),
+                singularName: answers.memberSingularName.toLowerCase()
+            });
+
+            if ( answers.askAgain ) {
+                ask( done );
+            } else {
+                done();
+            }
+        }.bind(self));
+    };
+
+    this.prompt(prompts, function ( answers ) {
+        this.appName = answers.appName;
+
+        if ( answers.hasRest ) {
+            this.hasRest = answers.hasRest;
+            ask( done );
+        }
     }.bind(this));
   },
 
-  app: function () {
+  configuring: function () {
 
     this.mkdir('dist');
     this.mkdir('src');
@@ -74,13 +111,8 @@ var AppGenerator = yeoman.generators.Base.extend({
     this.mkdir('test');
     this.mkdir('test/server');
     this.mkdir('test/client');
-  },
 
-  projectfiles: function () {
     this.copy('jshintrc', '.jshintrc');
-
-    // main server-side app
-    this.copy('_app.js', 'src/app.js');
 
     this.template('_README.md', 'README.md');
     this.template('_package.json', 'package.json');
@@ -88,9 +120,25 @@ var AppGenerator = yeoman.generators.Base.extend({
     this.template('_bower.json', 'bower.json');
     this.template('_gulpfile.js', 'gulpfile.js');
 
-    if ( this.hasRest ) {
-        this.template('_api.md', 'src/server/rest/api.md');
-    }
+  },
+
+  writing: function () {
+      // main server-side app
+      this.copy('_app.js', 'src/app.js');
+
+      if ( this.hasRest ) {
+          this.template('_api.md', 'src/server/rest/api.md');
+      }
+  },
+
+  install: function(){
+      if (!this.options['skip-install']) {
+          this.installDependencies();
+      }
+  },
+
+  end : function(){
+      this.log( chalk.magenta( 'Have a good day.' ));
   }
 });
 

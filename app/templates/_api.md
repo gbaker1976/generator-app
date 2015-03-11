@@ -5,7 +5,7 @@ HOST: http://api.yourserver.com
 
 <% _.forEach( apiMembers, function( member ) {  %>
 
-# <%= _.capitalize( member.pluralName ) %>
+# Group <%= _.capitalize( member.pluralName ) %>
 <%= _.capitalize( member.singularName ) %> related resources of the **<%= _.capitalize( appName ) %> API**
 
 ## <%= _.capitalize( member.pluralName ) %> Collection [/<%= member.pluralName %>]
