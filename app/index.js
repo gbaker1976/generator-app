@@ -147,8 +147,6 @@ var AppGenerator = yeoman.generators.Base.extend({
 
     this.template('_README.md', 'README.md');
     this.template('_package.json', 'package.json');
-    this.template('_bowerrc', '.bowerrc');
-    this.template('_bower.json', 'bower.json');
     this.template('_gulpfile.js', 'gulpfile.js');
 
   },

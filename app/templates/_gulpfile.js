@@ -4,9 +4,8 @@ var postcssNested = require( 'postcss-nested' );
 var cssnext = require( 'gulp-cssnext' );
 var fs = require( 'fs' );
 var wrench = require( 'wrench' );
-var aglio = require( 'gulp-aglio' );
 var browserSync = require( 'browser-sync' );
-var ApiMock = require( 'api-mock' );
+
 
 gulp.task( 'css-dev', function(){
 	return gulp.src( 'src/client/css/_all.css' )
@@ -48,12 +47,6 @@ gulp.task(
 	}
 );
 
-gulp.task( 'gen-api-docs', function() {
-	return gulp.src( 'src/server/rest/*.md' )
-		.pipe( aglio( { template: 'default' } ) )
-		.pipe( gulp.dest( 'dist/server/rest' ) );
-});
-
 gulp.task( 'serve-app', function() {
 	browserSync({
 		server: {
@@ -63,29 +56,6 @@ gulp.task( 'serve-app', function() {
 	});
 });
 
-<% if ( hasStyleguide ) { %>
-gulp.task( 'serve-styleguide', function() {
-	browserSync({
-		server: {
-			port: <%= styleguidePort %>,
-			baseDir: 'dist/styleguide'
-		}
-	});
-});
-<% } %>
 
-<% if ( hasMock ) { %>
-gulp.task ( 'serve-api-mock', function () {
-    var mockserver = new ApiMock({
-      blueprintPath: 'src/server/rest/api.md',
-      options: {
-        port: <%= mockPort %>
-      }
-    });
-
-    mockServer.run();
-});
-<% } %>
-
-gulp.task( 'default', [ 'clean-dist', 'css-dev', 'app-js', 'copy-html', <% if ( hasMock ) { %>'serve-api-mock',<% } %> 'serve-app'<% if ( hasStyleguide ) { %>, 'serve-styleguide'<% } %> ] );
+gulp.task( 'default', [ 'clean-dist', 'css-dev', 'app-js', 'copy-html', 'serve-app' ] );
 //gulp.task( 'package', [ 'clean-dist', 'css-prod', 'app-js', 'serve-app' ] );

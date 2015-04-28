@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "dependencies": {
     "mustache": "~0.8.1",
-    "express": "~4.0.0"
+    "express": "~4.0.0",
+    "http-proxy": "^1.8.1"
   },
   "devDependencies": {
       "browser-sync": "^2.2.1",
@@ -12,8 +13,10 @@
       "gulp-postcss": "^4.0.3",
       "gulp-watch": "^4.1.1",
       "mocha": "~1.19.0",
-      "gulp-aglio": "0.0.6",
+      "duo": "^0.9.6",
+      <% if ( hasRest ) { %>"gulp-aglio": "0.0.6",<% } %>
       "postcss-nested": "^0.2.2",
       "wrench": "^1.5.8"
+      <% if ( hasRest ) { %>,"api-mock": "^0.1.1"<%  } %>
   }
 }

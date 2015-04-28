@@ -27,7 +27,6 @@
     "chalk": "~0.4.0"
   },
   "devDependencies": {
-    "http-proxy": "^1.8.1",
     "inflection": "^1.6.0",
     "mocha": "*"
   },
