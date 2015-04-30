@@ -8,7 +8,7 @@ var path = require('path');
 var inflection = require('inflection');
 
 
-var AppGenerator = yeoman.generators.Base.extend({
+module.exports = yeoman.generators.Base.extend({
 
   initializing: function () {
     this.pkg = require( '../package.json' );
@@ -32,88 +32,61 @@ var AppGenerator = yeoman.generators.Base.extend({
             name: 'serverPort',
             message: 'What should the dev server port be?',
             default: 9002
-        },
-        {
-            type: 'confirm',
-            name: 'hasStyleguide',
-            message: 'Do you need a local styleguide server?',
-            default: true
-        },
-        {
-            type: 'number',
-            name: 'styleguidePort',
-            message: 'What should the styleguide server port be?',
-            default: 3003
         }
     ];
 
     this.prompt(prompts, function ( answers ) {
         this.appName = answers.appName;
         this.serverPort = answers.serverPort;
-
-        if ( answers.hasStyleguide ) {
-            this.hasStyleguide = answers.hasStyleguide;
-            this.styleguidePort = answers.styleguidePort;
-        }
     }.bind(this));
   },
 
-  writing: {
+  configuring: function(){
 
-      directories: function(){
-          this.mkdir('dist');
-          this.mkdir('src');
+      this.mkdir('dist');
+      this.mkdir('src');
 
-          // server-side
-          this.mkdir('src/server'); // app libs
-          this.mkdir('src/server/lib'); // app libs
-          this.mkdir('src/server/lib/vendor'); // third party app libs
-          this.mkdir('src/server/views'); // express views
-          this.mkdir('src/server/routes'); // server-side routes
+      // server-side
+      this.mkdir('src/server'); // app libs
+      this.mkdir('src/server/lib'); // app libs
+      this.mkdir('src/server/lib/vendor'); // third party app libs
+      this.mkdir('src/server/views'); // express views
+      this.mkdir('src/server/routes'); // server-side routes
 
-          // client-side
-          this.mkdir('src/client');
-          this.mkdir('src/client/lib');
-          this.mkdir('src/client/lib/vendor');
-          this.mkdir('src/client/layouts');
-          this.mkdir('src/client/css');
-          this.mkdir('src/client/js');
+      // client-side
+      this.mkdir('src/client');
+      this.mkdir('src/client/lib');
+      this.mkdir('src/client/lib/vendor');
+      this.mkdir('src/client/layouts');
+      this.mkdir('src/client/css');
+      this.mkdir('src/client/js');
 
-          // tests
-          this.mkdir('test');
-          this.mkdir('test/server');
-          this.mkdir('test/client');
-      },
+      // tests
+      this.mkdir('test');
+      this.mkdir('test/server');
+      this.mkdir('test/client');
 
-      files: function(){
-          this.template('_README.md', 'README.md');
-          this.template('_package.json', 'package.json');
-          this.template('_gulpfile.js', 'gulpfile.js');
+  },
 
-          this.copy('jshintrc', '.jshintrc');
-          this.copy('_app.js', 'src/app.js');
+  writing: function(){
 
-          this.copy('favicon.ico', 'src/favicon.ico');
-      },
+      this.template('_README.md', 'README.md');
+      this.template('_package.json', 'package.json');
+      this.template('_bower.json', 'bower.json');
+      this.template('_gulpfile.js', 'gulpfile.js');
 
-      bower: function(){
-          var bower = {
-            name: this._.slugify( this.appName ),
-            private: true,
-            dependencies: {}
-          };
+      this.copy('jshintrc', '.jshintrc');
+      this.copy('_app.js', 'src/app.js');
 
-          bower.dependencies.almond = "jburke/almond~0.3.1";
+      this.copy('favicon.ico', 'src/client/favicon.ico');
+      this.copy('main.js', 'src/client/main.js');
+      this.copy('_index.html', 'src/client/index.html');
 
-          this.copy( 'bowerrc', '.bowerrc' );
-          this.write( 'bower.json', JSON.stringify( bower, null, 2 ) );
-      }
   },
 
   install: function(){
-      if (!this.options['skip-install']) {
-          this.installDependencies();
-      }
+      this.npmInstall();
+      this.bowerInstall();
   },
 
   end : function(){
@@ -121,5 +94,3 @@ var AppGenerator = yeoman.generators.Base.extend({
   }
 
 });
-
-module.exports = AppGenerator;
