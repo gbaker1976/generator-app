@@ -27,11 +27,7 @@ app.get( '/', function( req, res, next ){
 });
 
 if ( 'development' === NODE_ENV ) {
-    <% if ( hasRest ) { %>
-    app.all( '/api/*', function( req, res ){
-        proxy.createProxyServer().web( req, res, { target: 'http://localhost:<%= mockPort %>' });
-    });
-    <% } %>
+    
 }
 
 /**** END STANDARD ROUTE CONFIG ****/
