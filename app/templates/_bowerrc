@@ -1,6 +1,6 @@
 {
 	"directory": "src/client/lib/vendor",
 	"scripts": {
-	    "postinstall": "bower-requirejs -c src/client/main.js"
+	    "postinstall": "./node_modules/.bin/bower-requirejs -c src/client/main.js"
 	  }
 }

@@ -38,6 +38,8 @@ module.exports = yeoman.generators.Base.extend({
     this.prompt(prompts, function ( answers ) {
         this.appName = answers.appName;
         this.serverPort = answers.serverPort;
+
+        done();
     }.bind(this));
   },
 
@@ -73,23 +75,27 @@ module.exports = yeoman.generators.Base.extend({
       this.template('_README.md', 'README.md');
       this.template('_package.json', 'package.json');
       this.template('_bower.json', 'bower.json');
+      this.template('_bowerrc', '.bowerrc');
       this.template('_gulpfile.js', 'gulpfile.js');
 
       this.copy('jshintrc', '.jshintrc');
       this.copy('_app.js', 'src/app.js');
 
-      this.copy('favicon.ico', 'src/client/favicon.ico');
-      this.copy('main.js', 'src/client/main.js');
-      this.copy('_index.html', 'src/client/index.html');
+      this.copy('client/favicon.ico', 'src/client/favicon.ico');
+      this.copy('client/main.js', 'src/client/main.js');
+      this.copy('client/_index.html', 'src/client/index.html');
 
   },
 
   install: function(){
-      this.npmInstall();
-      this.bowerInstall();
+      var self = this;
+
+      this.npmInstall( null, null, function(){
+        self.bowerInstall();
+      });
   },
 
-  end : function(){
+  end: function(){
       this.log( chalk.magenta( 'Have a good day.' ));
   }
 
