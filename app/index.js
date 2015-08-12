@@ -18,7 +18,7 @@ module.exports = yeoman.generators.Base.extend({
     var done = this.async();
     var self = this;
 
-    this.log( chalk.magenta( 'You\'re using the fantastic App generator.' ));
+    this.log( chalk.magenta( 'Let\'s generate an app!' ));
 
     var prompts = [
         {
