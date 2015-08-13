@@ -59,9 +59,9 @@ module.exports = yeoman.generators.Base.extend({
       this.mkdir('src/client');
       this.mkdir('src/client/lib');
       this.mkdir('src/client/lib/vendor');
-      this.mkdir('src/client/layouts');
       this.mkdir('src/client/css');
       this.mkdir('src/client/js');
+      this.mkdir('src/client/jsx');
 
       // tests
       this.mkdir('test');
@@ -77,12 +77,13 @@ module.exports = yeoman.generators.Base.extend({
       this.template('_bower.json', 'bower.json');
       this.template('_bowerrc', '.bowerrc');
       this.template('_gulpfile.js', 'gulpfile.js');
+      this.template('_example.jsx', 'src/client/jsx/example.jsx');
 
       this.copy('jshintrc', '.jshintrc');
       this.copy('_app.js', 'src/app.js');
 
       this.copy('client/favicon.ico', 'src/client/favicon.ico');
-      this.copy('client/main.js', 'src/client/main.js');
+      this.copy('client/app.js', 'src/client/app.js');
       this.copy('client/_index.html', 'src/client/index.html');
 
   },

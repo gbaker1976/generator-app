@@ -2,19 +2,20 @@
   "name": "<%= _.slugify(_.humanize(appName)) %>",
   "version": "0.0.0",
   "dependencies": {
-    "mustache": "~0.8.1",
     "express": "~4.0.0",
     "http-proxy": "^1.8.1"
   },
   "devDependencies": {
-      "webpack-dev-server": "~1.10",
-      "webpack": "~1.11",
-      "gulp": "~3.8.0",
-      "gulp-cssnext": "~1",
-      "gulp-postcss": "~4.0.3",
-      "gulp-watch": "~4.1.1",
-      "mocha": "~1.19.0",
-      "postcss-nested": "~0.2.2",
-      "wrench": "~1.5.8"
+    "gulp": "~3.8.0",
+    "gulp-cssnext": "~1",
+    "gulp-postcss": "~4.0.3",
+    "react": "~0.13.3",
+    "gulp-react": "~3.0.1",
+    "gulp-watch": "~4.1.1",
+    "mocha": "~1.19.0",
+    "postcss-nested": "~0.2.2",
+    "webpack": "~1.11",
+    "webpack-dev-server": "~1.10",
+    "wrench": "~1.5.8"
   }
 }

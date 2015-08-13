@@ -1,11 +1,6 @@
 {
 	"name": "<%= _.slugify(_.humanize(appName)) %>",
   "version": "0.0.0",
-	"dependencies": {
-		"almond": "jrburke/almond#0.3.1",
-		"backbone": "jashkenas/backbone#1.1.2",
-		"underscore": "jashkenas/underscore#1.8.3",
-		"backbone.native": "inkling/backbone.native"
-	},
+	"dependencies": {},
 	"devDependencies": {}
 }
