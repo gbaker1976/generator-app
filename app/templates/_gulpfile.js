@@ -9,19 +9,19 @@ var react = require( 'gulp-react' );
 var WebpackDevServer = require( 'webpack-dev-server' );
 
 gulp.task( 'css-dev', function(){
-	return gulp.src( 'src/client/css/_all.css' )
+	return gulp.src( 'src/app/css/_all.css' )
 		.pipe( cssnext({
 			compress: false
 		}))
 		.pipe( postcss( [ postcssNested ] ) )
-		.pipe( gulp.dest( 'dist/client/css' ) )
+		.pipe( gulp.dest( 'dist/app/css' ) )
 });
 
 gulp.task( 'css-prod', function(){
-	return gulp.src( 'src/client/css/_all.css' )
+	return gulp.src( 'src/app/css/_all.css' )
 		.pipe( cssnext() )
 		.pipe( postcss( [ postcssNested ] ) )
-		.pipe( gulp.dest( 'dist/client/css' ) )
+		.pipe( gulp.dest( 'dist/app/css' ) )
 });
 
 gulp.task(
@@ -39,38 +39,32 @@ gulp.task(
 gulp.task(
 	'copy-html',
 	function ( cb ) {
-		return gulp.src( 'src/client/index.html' )
-			.pipe( gulp.dest( 'dist/client' ) );
+		return gulp.src( 'src/app/index.html' )
+			.pipe( gulp.dest( 'dist/app' ) );
 	}
 );
 
 gulp.task( 'react', function () {
-    return gulp.src('src/client/jsx/**/*.jsx')
+    return gulp.src('src/app/jsx/**/*.jsx')
 			.pipe( react() )
-			.pipe( gulp.dest( 'src/client/jsx' ));
+			.pipe( gulp.dest( 'src/app/jsx' ));
 });
 
 gulp.task( 'webpack', function( callback ) {
     // run webpack
     webpack({
 
-			context: __dirname + '/src/client',
-			entry: './app',
+			context: __dirname + '/src/app',
+			entry: './main',
 			output: {
-				path: __dirname + '/dist/client',
-				filename: 'app.js'
+				path: __dirname + '/dist/app',
+				filename: 'main.js'
 			},
 			resolve: {
 				root: [
-					__dirname + '/src/client/lib',
-					__dirname + '/src/client/jsx'
+					__dirname + '/src/app/jsx'
 				]
-			},
-			plugins: [
-				new webpack.ResolverPlugin(
-						new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin( 'bower.json', ['main'] )
-					)
-			]
+			}
 
 		}, function( err, stats ) {
         if ( err ) throw new gutil.PluginError( 'webpack', err );
@@ -85,28 +79,22 @@ gulp.task( 'webpack-dev-server', function( callback ) {
     // Start a webpack-dev-server
 		var compiler = webpack({
 
-			context: __dirname + '/src/client',
-			entry: './app',
+			context: __dirname + '/src/app',
+			entry: './main',
 			output: {
-				path: __dirname + '/dist/client',
-				filename: 'app.js'
+				path: __dirname + '/dist/app',
+				filename: 'main.js'
 			},
 			resolve: {
 				root: [
-					__dirname + '/src/client/lib',
-					__dirname + '/src/client/jsx'
+					__dirname + '/src/app/jsx'
 				]
-			},
-			plugins: [
-				new webpack.ResolverPlugin(
-						new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin( 'bower.json', ['main'] )
-					)
-			]
+			}
 
 		});
 
     new WebpackDevServer( compiler, {
-			contentBase: "dist/client"
+			contentBase: "dist/app"
     }).listen( 8080, 'localhost', function( err ) {
         if( err ) throw new gutil.PluginError( 'webpack-dev-server', err );
         // Server listening

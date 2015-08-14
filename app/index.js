@@ -50,18 +50,13 @@ module.exports = yeoman.generators.Base.extend({
 
       // server-side
       this.mkdir('src/server'); // app libs
-      this.mkdir('src/server/lib'); // app libs
-      this.mkdir('src/server/lib/vendor'); // third party app libs
       this.mkdir('src/server/views'); // express views
       this.mkdir('src/server/routes'); // server-side routes
 
       // client-side
-      this.mkdir('src/client');
-      this.mkdir('src/client/lib');
-      this.mkdir('src/client/lib/vendor');
-      this.mkdir('src/client/css');
-      this.mkdir('src/client/js');
-      this.mkdir('src/client/jsx');
+      this.mkdir('src/app');
+      this.mkdir('src/app/css');
+      this.mkdir('src/app/jsx');
 
       // tests
       this.mkdir('test');
@@ -74,26 +69,20 @@ module.exports = yeoman.generators.Base.extend({
 
       this.template('_README.md', 'README.md');
       this.template('_package.json', 'package.json');
-      this.template('_bower.json', 'bower.json');
-      this.template('_bowerrc', '.bowerrc');
       this.template('_gulpfile.js', 'gulpfile.js');
-      this.template('_example.jsx', 'src/client/jsx/example.jsx');
+      this.template('app/_example.jsx', 'src/app/jsx/example.jsx');
 
       this.copy('jshintrc', '.jshintrc');
-      this.copy('_app.js', 'src/app.js');
+      this.copy('_server.js', 'src/server.js');
 
-      this.copy('client/favicon.ico', 'src/client/favicon.ico');
-      this.copy('client/app.js', 'src/client/app.js');
-      this.copy('client/_index.html', 'src/client/index.html');
+      this.copy('app/favicon.ico', 'src/app/favicon.ico');
+      this.copy('app/main.js', 'src/app/main.js');
+      this.copy('app/_index.html', 'src/app/index.html');
 
   },
 
   install: function(){
-      var self = this;
-
-      this.npmInstall( null, null, function(){
-        self.bowerInstall();
-      });
+      this.npmInstall();
   },
 
   end: function(){
