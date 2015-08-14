@@ -26,12 +26,6 @@ module.exports = yeoman.generators.Base.extend({
             name: 'appName',
             message: 'What is the name of your app?',
             default: path.basename( process.cwd() )
-        },
-        {
-            type: 'number',
-            name: 'serverPort',
-            message: 'What should the dev server port be?',
-            default: 9002
         }
     ];
 
