@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "inflection": "^1.6.0",
+    "jspm": "^0.16.29",
     "mocha": "*"
   },
   "peerDependencies": {
